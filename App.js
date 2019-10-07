@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, SafeAreaView, TextInput, Button,View ,ScrollView ,FlatList ,Dimensions} from 'react-native';
+import { Text, SafeAreaView, TextInput, Button, View, FlatList, TouchableOpacity,ScrollView} from 'react-native';
 
 import  { Navbar } from './components/navbar'
 
 import  style from './styles/style'
 
-const { container, botao, entrada,texto,col} = style;
+const { root, data, container, botao, entrada,texto,col, size, borders, scroll,clear} = style;
 
 export default class App extends Component {
   
@@ -27,40 +27,41 @@ export default class App extends Component {
   }
 
   render(){
-    
     return (
-      <SafeAreaView style={[{height:Dimensions.get('screen').height}]}>
+      <SafeAreaView style={root}>
         <Navbar name="MY TODO"></Navbar>
-        <View style={[{marginTop:10}]}> 
-            <View style={[container]}>
-              <TextInput style={entrada} 
-              onChangeText={(texto)=>this.setState({text:texto})}
-              value={this.state.text}/>
-            </View>
-            <View style={[container,{marginTop:10}]}>
-              <Button title="append" onPress={()=>{
+          <View style={[container]}>
+            <TextInput style={[entrada,borders]} 
+            onChangeText={(text)=>this.setState({text})}
+            value={this.state.text}/>
+          </View>
+          <View style={[container,col]}>
+          <TouchableOpacity style={[botao,borders]} onPress={()=>{
                 if(this.state.text != ''){
                   const lista = this.state.lista.concat({index:0,text:this.state.text})
                   this.state.text = ''
                   this.setState({lista})
                 }
-              }}/>
-            </View>
-            <ScrollView style={{marginTop:20}}>
-              <FlatList data={this.state.lista} 
-              keyExtractor={() => String(this.cont++)}
-              renderItem={({item,index})=>(<Item id={index} text={item.text} onPress={()=> {
-                item.index = index 
-                this.deletar(item)}}/>)}>
-              </FlatList>
-            </ScrollView>
-        </View>
-        <View style={[{position:'absolute',bottom:50,width:Dimensions.get('screen').width}]}>
-              <Button title="clear" onPress={()=>{
+              }}>
+                <Text style={[{textAlign:'center'}]}>APPEND</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[botao,borders]} onPress={()=>{
                 this.cont = 0;
                 this.setState({lista:[],text:''})
-              }}></Button>
-            </View>
+              }}>
+                <Text style={{textAlign:'center'}}>CLEAR</Text>
+          </TouchableOpacity>
+        </View>
+            <ScrollView style={[scroll]}>
+              <View style={[container]}>
+                <FlatList data={this.state.lista} 
+                    keyExtractor={() => String(this.cont++)}
+                    renderItem={({item,index})=>(<Item id={index} text={item.text} onPress={()=> {
+                  item.index = index 
+                  this.deletar(item)}}/>)}>
+                </FlatList>  
+              </View>
+            </ScrollView>
       </SafeAreaView>
     );
   }
@@ -70,13 +71,15 @@ export default class App extends Component {
 
 function Item({id,text,onPress}){
   return(
-  <View>
-    <View style={col}>
-      <Text style={texto}>{id} - {text}</Text>
+  <View style={[col]}>
+    <View style={data}>
+      <ScrollView horizontal={true}>
+        <Text style={[texto]}>{id} - {text}</Text>
+      </ScrollView>
     </View>
-    <View style={[col,botao]}>
-      <Button title="deletar" onPress={onPress}></Button>
-    </View>
+    <TouchableOpacity style={[borders,botao]} onPress={onPress}>
+      <Text style={{textAlign:'center'}}>Delete</Text>
+    </TouchableOpacity>
   </View>
   )
 }
