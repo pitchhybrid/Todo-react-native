@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet,StatusBar } from 'react-native';
 
-export default style = StyleSheet.create({
+export default StyleSheet.create({
     container: {
         backgroundColor: '#87CEFA',
         alignItems: 'center',
         top:0,
         width:'100%',
-        height:50
+        height:StatusBar.currentHeight + 50
       },
       texto:{
           color:'white',

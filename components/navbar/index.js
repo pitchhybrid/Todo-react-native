@@ -3,7 +3,7 @@ import { SafeAreaView ,Text} from 'react-native';
 
 import style from './style';
 
-export function Navbar({name}){
+export default ({name}) => {
     
 return(
     <SafeAreaView style={style.container}>
